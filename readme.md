@@ -1,4 +1,5 @@
-![image](https://github.com/user-attachments/assets/786f668b-7e31-4ff5-9f89-acdcf8ff7429)
+![image](https://github.com/user-attachments/assets/2f3914ad-bd0a-4035-90fd-72c999a6ac14)
+
 
 # Configuración del Proyecto
 
