@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/786f668b-7e31-4ff5-9f89-acdcf8ff7429)
+
 # Configuración del Proyecto
 
 Este documento describe cómo configurar y ejecutar el proyecto tanto para el front-end como para el back-end.
