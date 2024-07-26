@@ -4,6 +4,7 @@
     title: string;
     description: string;
     startingPrice: string;
+    currentPrice?: string;
     userId: number;
     endTime: string;
   };

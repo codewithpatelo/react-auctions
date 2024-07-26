@@ -1,8 +1,10 @@
+// Página que nos permite identificarnos y comenzar a operar en nuestra aplicación
 // src/pages/login.tsx
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import nookies from 'nookies';
+import Link from 'next/link';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +14,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Solicitamos el JWT al BE
       const response = await axios.post('http://localhost:4000/api/auth/login', { email, password });
       console.log("Response: ", response.data);
       const { access_token, user_id } = response.data;
@@ -87,9 +90,9 @@ const Login = () => {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Not a member?{' '}
-          <a href="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          <Link href="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
             Register here
-          </a>
+          </Link>
         </p>
       </div>
     </div>

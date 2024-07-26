@@ -1,3 +1,5 @@
+// Este es nuestro tablero de control
+// Aca veremos las subastas de nuestro usuario y sus respectivas pujas agrupadas por subasta
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -7,6 +9,8 @@ import { io } from 'socket.io-client';
 import nookies from 'nookies';
 import { Auction, User, Bid } from '@/types';
 
+
+// Client Socket.IO
 const socket = io(process.env.NEXT_PUBLIC_API_URL as string);
 
 const Dashboard = () => {
@@ -19,7 +23,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Check if user is authenticated
+        // Chequeamos auth
         const cookies = nookies.get();
         const token = cookies.token;
 
@@ -28,20 +32,21 @@ const Dashboard = () => {
           return;
         }
 
-        // Fetch user profile
+        // Primero obtenemos datos del perfil del usuario
         const profileResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUserProfile(profileResponse.data);
 
-        // Fetch auctions
+        // Una vez obtenido ese dato, procedemos a obtener el listado de subastas
         const auctionsResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auctions`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        // Filtramos aquellas que sean del usuario
         const userAuctions = auctionsResponse.data.filter((auction: Auction) => Number(auction.userId) === Number(profileResponse.data.id));
         setAuctions(userAuctions);
 
-        // Filter auctions for user's bids
+        // Por cada subasta, obtenemos sus respectivas pujas
         const userBids: Bid[] = [];
         for (const auction of userAuctions) {
           const bidsResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auctions/${auction.id}/bids`, {
@@ -68,18 +73,19 @@ const Dashboard = () => {
 
   useEffect(() => {
 
+    // Aca manejamos los mensajes del socket...
     socket.on('auctionUpdate', (data) => {
 
       const newAuction = data as Auction;
 
-      // Agregar el nuevo bid a la lista existente
+      // Agregamos el nuevo bid a la lista existente sin necesidad de hacer una nueva llamada fetch
       setAuctions((prevAuctions) => [newAuction, ...prevAuctions]);
     });
 
     socket.on('bidUpdate', (data) => {
       const newBid = data as Bid;
 
-      // Agregar el nuevo bid a la lista existente
+      // Agregamos el nuevo bid a la lista existente
       setBids((prevBids) => [newBid, ...prevBids]);
     });
 
@@ -90,16 +96,13 @@ const Dashboard = () => {
   }, []);
 
 
-  useEffect(() => {
-    console.log(bids);
-  }, [bids]);
-
+  // Mostramos errores si los hay...
   if (error) return <div>{error}</div>;
   if (!userProfile) return <div>Loading...</div>;
 
   return (
     <div className="p-6">
-      <div className="lg:flex lg:items-center lg:justify-between mb-6">
+      <div className="nav lg:flex lg:items-center lg:justify-between mb-6">
         <div className="min-w-0 flex-1">
           <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
             Dashboard {bids.length}
@@ -116,12 +119,10 @@ const Dashboard = () => {
       </div>
 
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">User Profile</h2>
-        <p className="mt-2 text-sm text-gray-600">Name: {userProfile.name}</p>
-        <p className="mt-1 text-sm text-gray-600">Email: {userProfile.email}</p>
+        <h2 className="text-xl font-semibold text-gray-900">User ({userProfile.email})</h2>
       </div>
 
-      <div className="mx-auto max-w-4xl">
+      <div className="form mx-auto max-w-4xl">
         <h2 className="text-xl font-semibold text-gray-900">Your Auctions</h2>
         {auctions.map((auction) => {
           const auctionBids = bids.filter((bid) => bid.auctionId === auction.id);

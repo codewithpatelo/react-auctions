@@ -1,7 +1,7 @@
+// Esta página nos permite ver el detalle de una subasta en particular
 // src/pages/auction/[id].tsx
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import { PlusIcon, ArrowLeftIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { fetchAuction, updateAuction, deleteAuction, placeBid } from '@/api';
 import { Auction } from '@/types';
@@ -27,6 +27,7 @@ const AuctionPage = () => {
       const cookies = nookies.get();
       const token = cookies.token;
 
+      // Como toda pantalla de operación, validamos autentificación y estado de sesión
       if (!token) {
         router.push('/login');
         return;
@@ -51,6 +52,8 @@ const AuctionPage = () => {
     loadAuction();
   }, [id]);
 
+
+  // Función para subir una puja, nos lleva a panel de control
   const handleBidSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (typeof bid === 'number' && auction) {
@@ -65,6 +68,7 @@ const AuctionPage = () => {
     }
   };
 
+  // Guardamos la edición realizada
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (auction) {
@@ -81,6 +85,8 @@ const AuctionPage = () => {
     }
   };
 
+
+  // Borrar subasta
   const handleDelete = async () => {
     if (auction) {
       try {
@@ -93,13 +99,14 @@ const AuctionPage = () => {
     }
   };
 
+  // Render condicionales
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
   if (!auction) return <div>Auction not found</div>;
 
   return (
     <div className="p-6">
-      <div className="lg:flex lg:items-center lg:justify-between">
+      <div className="nav lg:flex lg:items-center lg:justify-between">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
             {auction.title}
@@ -142,53 +149,53 @@ const AuctionPage = () => {
           </span>
         </div>
       </div>
-
-      <form onSubmit={handleEditSubmit} className="mt-8 space-y-6">
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            value={editTitle}
-            onChange={(e) => setEditTitle(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-            Description
-          </label>
-          <textarea
-            id="description"
-            value={editDescription}
-            onChange={(e) => setEditDescription(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">
-            End Time
-          </label>
-          <input
-            type="datetime-local"
-            id="endTime"
-            value={editEndTime}
-            onChange={(e) => setEditEndTime(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <button
-            type="submit"
-            className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Update Auction
-          </button>
-        </div>
-      </form>
-
+      <div className="contenedorForm">
+        <form onSubmit={handleEditSubmit} className="form mt-8 space-y-6">
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
+            <textarea
+              id="description"
+              value={editDescription}
+              onChange={(e) => setEditDescription(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">
+              End Time
+            </label>
+            <input
+              type="datetime-local"
+              id="endTime"
+              value={editEndTime}
+              onChange={(e) => setEditEndTime(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Update Auction
+            </button>
+          </div>
+        </form>
+      </div>
       {/* Bid Modal */}
       <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-10">
         <DialogBackdrop
@@ -204,7 +211,7 @@ const AuctionPage = () => {
             >
               <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
-                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <div className="form mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                     <DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900">
                       Place Your Bid
                     </DialogTitle>

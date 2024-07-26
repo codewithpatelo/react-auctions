@@ -1,3 +1,4 @@
+// Página que nos permite crear una subasta
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import nookies from 'nookies';
@@ -13,6 +14,7 @@ const CreateAuction = () => {
   const [userId, setUserId] = useState(nookies.get(null).user_id);
 
   useEffect(() => {
+    // Chequeamos que el usuario este autentificado y si no lo redirigimos al Login
     const checkAuth = async () => {
       const cookies = nookies.get(null);
       console.log(cookies);
@@ -40,7 +42,7 @@ const CreateAuction = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="createAuctionContainer max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6">Create Auction</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -52,7 +54,7 @@ const CreateAuction = () => {
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter auction title"
             required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
           />
         </div>
         <div>
@@ -64,7 +66,7 @@ const CreateAuction = () => {
             placeholder="Enter auction description"
             required
             rows={4}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
           />
         </div>
         <div>
@@ -75,7 +77,7 @@ const CreateAuction = () => {
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
             required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
           />
         </div>
         <div>
@@ -88,12 +90,12 @@ const CreateAuction = () => {
             onChange={(e) => setStartingPrice(e.target.value)}
             placeholder="Enter starting price"
             required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
           />
         </div>
         <button
           type="submit"
-          className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          className="w-full px-4 py-2 bg-indigo-500 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
         >
           Create Auction
         </button>

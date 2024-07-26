@@ -47,11 +47,11 @@ Ejecutamos la migración para aplicar cambios al esquema de la base de datos:
   npm run start
 ```
 
-## Configuración del Front-End (React-NextJs-Prisma)
+## Configuración del Front-End (React-NextJs-TailWind-Prisma)
 
 Ahora vamos al repositorio del front-end.
 
-2. **Instalar Dependencias**
+1. **Instalar Dependencias**
 
 Instalamos las dependencias del proyecto con compatibilidad garantizada de librerías de testing:
 
@@ -59,7 +59,7 @@ Instalamos las dependencias del proyecto con compatibilidad garantizada de libre
   npm install --legacy-peer-deps
 ```
 
-3. **Creamos las Variables Ambientales**
+2. **Creamos las Variables Ambientales**
 
 Creamos un archivo .env en el directorio raíz del proyecto con el siguiente contenido:
 
@@ -70,17 +70,18 @@ DATABASE_URL=postgresql://<user>:<pass>@localhost:5432/auction_db
 
 Hay que reemplazar <user> y <pass> con los valores correspondientes.
 
-4. **Configuramos Prisma para el Front-End**
+3. **Configuramos Prisma para el Front-End**
 
 Hacemos lo mismo que hicimos con el BE.
 
 
-5. **Corremos Front-End**
+4. **Corremos Front-End**
 
 ```bash
   npm run dev 
 ```
 
+5. **Creamos un usuario y unas subastas de prueba**
 
 ## Se hicieron unas pruebas básicas en BE y FE
 

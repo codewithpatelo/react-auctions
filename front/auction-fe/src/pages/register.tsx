@@ -1,15 +1,29 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { isValidEmail } from '@/lib/utils';
 
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Validar desde el componente como hacemos es buena práctica ya que mitigamos los errores humanos en el primer eslabon de interacción
+      // Ahora, si bien el componente mismo puede abordar tal validación, aca mostraremos un
+      // Aca mostraremos un ejemplo de validación usando utilidades
+      if (!isValidEmail(email)) {
+        const error = 'Error: Invalid e-mail.';
+        setError(error);
+        throw error;
+      }
+      // En algunos contextos de alta complejidad,
+      // Usar utilidades nos ayuda a ser más rigurosos y asegurarnos que enviamos los datos que espera nuestro servidor de BE
+
       await axios.post('http://localhost:4000/api/auth/sign-up', { email, password });
       router.push('/login');
     } catch (error) {
@@ -27,7 +41,7 @@ const Register = () => {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleSubmit} className="space-y-6">
-
+          {error && <p className='error'>{error}</p>}
           <div>
             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
               Email address
@@ -76,9 +90,9 @@ const Register = () => {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Already have an account?{' '}
-          <a href="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          <Link href="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>
