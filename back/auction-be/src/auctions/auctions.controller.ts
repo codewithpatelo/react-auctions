@@ -19,7 +19,7 @@ export class AuctionsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.auctionsService.findOne(+id);
+    return this.auctionsService.findOne(Number(id));
   }
 
   @Put(':id')

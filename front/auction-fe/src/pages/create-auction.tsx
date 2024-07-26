@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import nookies from 'nookies';
-import axios from 'axios';
 import { createAuction } from '@/api';
-import { useSession } from 'next-auth/react';
 
 const CreateAuction = () => {
   const [title, setTitle] = useState('');
@@ -11,7 +9,7 @@ const CreateAuction = () => {
   const [endTime, setEndTime] = useState('');
   const [startingPrice, setStartingPrice] = useState('');
   const router = useRouter();
-  const session = useSession();
+
   const [userId, setUserId] = useState(nookies.get(null).user_id);
 
   useEffect(() => {
