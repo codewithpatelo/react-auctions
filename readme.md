@@ -43,7 +43,13 @@ Ejecutamos la migración para aplicar cambios al esquema de la base de datos:
   npx prisma generate
 ```
 
-5. **Corremos el Back-End en una terminal**
+5. **Populamos la DB con datos ficticios**
+
+```bash
+  node seed.js
+```
+
+6. **Corremos el Back-End en una terminal**
 
 ```bash
   npm run start
