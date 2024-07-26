@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+// Aca estan todas las rutas correspondientes al CRUD de subastas
+
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AuctionsService } from './auctions.service';
 import { CreateAuctionDto, UpdateAuctionDto } from './dto/auctions.dto';
-
 
 @Controller('auctions')
 export class AuctionsController {

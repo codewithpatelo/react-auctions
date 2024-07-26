@@ -1,7 +1,16 @@
-import { WebSocketGateway, SubscribeMessage, OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect, WebSocketServer } from '@nestjs/websockets';
+// Aca generaremos el servidor de socket para transmitir información en tiempo real al FE
+import {
+  WebSocketGateway,
+  SubscribeMessage,
+  OnGatewayInit,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+  WebSocketServer,
+} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Injectable } from '@nestjs/common';
 
+// Debemos configurar CORS para evitar bloqueos de los mensajes
 @WebSocketGateway({
   cors: {
     origin: 'http://localhost:3000',
@@ -10,7 +19,9 @@ import { Injectable } from '@nestjs/common';
   },
 })
 @Injectable()
-export class AuctionGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class AuctionGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer()
   server: Server;
 
@@ -26,13 +37,26 @@ export class AuctionGateway implements OnGatewayInit, OnGatewayConnection, OnGat
     console.log('Client disconnected:', client.id);
   }
 
-  // Emitir un evento de actualización de subasta
-  sendAuctionUpdate(id: number, title: string, description: string, startingPrice: number, userId: number, endTime: Date) {
-    this.server.emit('auctionUpdate', { id, title, description, startingPrice, userId, endTime });
+  // Si se actualiza una subasta, emitimos un evento de actualización de subasta
+  sendAuctionUpdate(
+    id: number,
+    title: string,
+    description: string,
+    startingPrice: number,
+    userId: number,
+    endTime: Date,
+  ) {
+    this.server.emit('auctionUpdate', {
+      id,
+      title,
+      description,
+      startingPrice,
+      userId,
+      endTime,
+    });
   }
 
-
-  // Emitir un evento de nueva puja
+  // Si se actualiza una puja, emitimos un evento de nueva puja
   sendBidUpdate(bidId: number, bidAmount: number, auctionId: number) {
     this.server.emit('bidUpdate', { id: bidId, amount: bidAmount, auctionId });
   }

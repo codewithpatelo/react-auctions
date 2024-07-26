@@ -5,44 +5,44 @@ import { AuctionGateway } from 'src/auction.gateway';
 
 @Injectable()
 export class BidsService {
-    constructor(
-        private readonly prisma: PrismaService,
-        private readonly auctionGateway: AuctionGateway,
-    ) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly auctionGateway: AuctionGateway,
+  ) {}
 
-    async create(createBidDto: CreateBidDto) {
-        const bid = await this.prisma.bid.create({
-            data: {
-                ...createBidDto,
-                createdAt: new Date(),
-            },
-        });
-        this.auctionGateway.sendBidUpdate(bid.id, bid.amount, bid.auctionId); // Emitir evento de nueva puja
-        return bid;
-    }
-    
-    async findAllByAuctionId(auctionId: number) {
-        return this.prisma.bid.findMany({
-            where: { auctionId },
-            orderBy: {
-                createdAt: 'desc',
-            },
-        });
-    }
+  async create(createBidDto: CreateBidDto) {
+    const bid = await this.prisma.bid.create({
+      data: {
+        ...createBidDto,
+        createdAt: new Date(),
+      },
+    });
+    this.auctionGateway.sendBidUpdate(bid.id, bid.amount, bid.auctionId); // Emitir evento de nueva puja
+    return bid;
+  }
 
-    async findOne(id: number) {
-        const bid = await this.prisma.bid.findUnique({ where: { id } });
-        if (!bid) {
-            throw new NotFoundException(`Bid with ID ${id} not found`);
-        }
-        return bid;
-    }
+  async findAllByAuctionId(auctionId: number) {
+    return this.prisma.bid.findMany({
+      where: { auctionId },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 
-    async remove(id: number) {
-        const bid = await this.prisma.bid.findUnique({ where: { id } });
-        if (!bid) {
-            throw new NotFoundException(`Bid with ID ${id} not found`);
-        }
-        return this.prisma.bid.delete({ where: { id } });
+  async findOne(id: number) {
+    const bid = await this.prisma.bid.findUnique({ where: { id } });
+    if (!bid) {
+      throw new NotFoundException(`Bid with ID ${id} not found`);
     }
+    return bid;
+  }
+
+  async remove(id: number) {
+    const bid = await this.prisma.bid.findUnique({ where: { id } });
+    if (!bid) {
+      throw new NotFoundException(`Bid with ID ${id} not found`);
+    }
+    return this.prisma.bid.delete({ where: { id } });
+  }
 }

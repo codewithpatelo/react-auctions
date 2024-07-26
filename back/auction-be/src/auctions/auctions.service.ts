@@ -8,27 +8,36 @@ export class AuctionsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly auctionGateway: AuctionGateway,
-  ) { }
+  ) {}
 
   async create(createAuctionDto: CreateAuctionDto) {
-    const { userId, startingPrice, endTime, ...restOfCreateAuctionDto } = createAuctionDto;
+    const { userId, startingPrice, endTime, ...restOfCreateAuctionDto } =
+      createAuctionDto;
 
-    // Asegúrate de que endTime sea un objeto Date
     const formattedEndTime = new Date(endTime);
 
+    // Realizamos las conversiones necesarias para la transferencia de datos
     const auction = await this.prisma.auction.create({
       data: {
         ...restOfCreateAuctionDto,
-        currentPrice: Number(startingPrice), // Asegúrate de que currentPrice sea un número
-        startingPrice: Number(startingPrice), // Asegúrate de que startingPrice sea un número
-        endTime: formattedEndTime, // Usa el objeto Date para endTime
+        currentPrice: Number(startingPrice),
+        startingPrice: Number(startingPrice),
+        endTime: formattedEndTime,
         user: {
-          connect: { id: userId }, // Conecta la subasta con el usuario existente
+          connect: { id: userId },
         },
       },
     });
 
-    this.auctionGateway.sendAuctionUpdate(auction.id, auction.title, auction.description, auction.startingPrice, auction.userId, auction.endTime); // Emite el evento para la nueva subasta
+    // Emitiremos evento para actualización en tiempo real
+    this.auctionGateway.sendAuctionUpdate(
+      auction.id,
+      auction.title,
+      auction.description,
+      auction.startingPrice,
+      auction.userId,
+      auction.endTime,
+    );
     return auction;
   }
 
@@ -53,7 +62,14 @@ export class AuctionsService {
       where: { id },
       data: updateAuctionDto,
     });
-    this.auctionGateway.sendAuctionUpdate(auction.id, auction.title, auction.description, auction.startingPrice, auction.userId, auction.endTime); // Emite el evento para la actualización de la subasta
+    this.auctionGateway.sendAuctionUpdate(
+      auction.id,
+      auction.title,
+      auction.description,
+      auction.startingPrice,
+      auction.userId,
+      auction.endTime,
+    ); // Emite el evento para la actualización de la subasta
     return auction;
   }
 

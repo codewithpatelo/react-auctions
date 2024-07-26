@@ -6,7 +6,6 @@ export class CreateAuctionDto {
   userId: number;
   endTime: Date;
 }
-  
 
 export class UpdateAuctionDto {
   title?: string;

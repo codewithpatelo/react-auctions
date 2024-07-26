@@ -1,3 +1,4 @@
+// Aca se encuentran todas las rutas relacionadas al CRUD de pujas
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { BidsService } from './bids.service';
 import { CreateBidDto } from './dto/bids.dto';

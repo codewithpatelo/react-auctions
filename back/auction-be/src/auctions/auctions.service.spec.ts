@@ -1,3 +1,4 @@
+// Este es un simple ejemplo de pruebas básicas usando Jest
 // src/auctions/auctions.service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuctionsService } from './auctions.service';
@@ -36,8 +37,12 @@ describe('AuctionsService', () => {
     }).compile();
 
     service = module.get<AuctionsService>(AuctionsService);
-    prisma = module.get<PrismaService>(PrismaService) as jest.Mocked<PrismaService>;
-    auctionGateway = module.get<AuctionGateway>(AuctionGateway) as jest.Mocked<AuctionGateway>;
+    prisma = module.get<PrismaService>(
+      PrismaService,
+    ) as jest.Mocked<PrismaService>;
+    auctionGateway = module.get<AuctionGateway>(
+      AuctionGateway,
+    ) as jest.Mocked<AuctionGateway>;
   });
 
   describe('create', () => {
@@ -55,14 +60,13 @@ describe('AuctionsService', () => {
       const auction = {
         id: 1,
         ...createAuctionDto,
-        endTime: now.toISOString(), // Asegúrate de que endTime sea una cadena ISO aquí también
+        endTime: now.toISOString(),
       };
 
       (prisma.auction.create as jest.Mock).mockResolvedValue(auction);
 
       await expect(service.create(createAuctionDto)).resolves.toEqual(auction);
 
-      // Verifica que la llamada real a `prisma.auction.create` incluya `endTime` como cadena ISO
       expect(prisma.auction.create).toHaveBeenCalledWith({
         data: {
           title: createAuctionDto.title,
@@ -88,4 +92,5 @@ describe('AuctionsService', () => {
   });
 
   // Otras pruebas...
+  // Debemos apuntar a tener la mayor cobertura posible
 });
