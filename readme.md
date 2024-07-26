@@ -81,12 +81,13 @@ Hacemos lo mismo que hicimos con el BE.
   npm run dev 
 ```
 
-5. **Creamos un usuario y unas subastas de prueba**
+5. **Creamos un usuario y unas subastas de prueba** 
 
-## Se hicieron unas pruebas básicas en BE y FE
+## Se hicieron unas pruebas básicas en BE y FE - JEST | VITEST -
 
 Respectivamente:
 
 ```bash
   npm run test 
 ```
+
