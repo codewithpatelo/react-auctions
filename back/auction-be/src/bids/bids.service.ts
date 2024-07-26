@@ -17,7 +17,7 @@ export class BidsService {
                 createdAt: new Date(),
             },
         });
-        this.auctionGateway.sendBidUpdate(bid.id); // Emitir evento de nueva puja
+        this.auctionGateway.sendBidUpdate(bid.id, bid.amount, bid.auctionId); // Emitir evento de nueva puja
         return bid;
     }
     

@@ -8,7 +8,11 @@
     endTime: string;
   };
 
-
+  export interface Bid {
+    id: number;
+    amount: number;
+    auctionId: number;
+  }
   
   export type User = {
     id: number;
@@ -16,3 +20,4 @@
     name: string;
   };
   
+

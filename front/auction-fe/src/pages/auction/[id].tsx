@@ -57,6 +57,7 @@ const AuctionPage = () => {
       try {
         await placeBid(Number(auction.id), bid, Number(userId));
         alert('Bid placed successfully!');
+        router.push('/dashboard');
         setIsModalOpen(false);
       } catch (error) {
         alert('Failed to place bid.');

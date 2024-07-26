@@ -13,22 +13,22 @@ export class AuctionsService {
   async create(createAuctionDto: CreateAuctionDto) {
     const { userId, startingPrice, endTime, ...restOfCreateAuctionDto } = createAuctionDto;
 
-    // Ensure endTime is a valid ISO-8601 string
-    const isoEndTime = new Date(endTime).toISOString();
+    // Asegúrate de que endTime sea un objeto Date
+    const formattedEndTime = new Date(endTime);
 
     const auction = await this.prisma.auction.create({
       data: {
         ...restOfCreateAuctionDto,
-        currentPrice: Number(startingPrice), // Set currentPrice to startingPrice
-        startingPrice: Number(startingPrice), // Make sure startingPrice is included in the data
-        endTime: isoEndTime, // Ensure endTime is a valid ISO-8601 string
+        currentPrice: Number(startingPrice), // Asegúrate de que currentPrice sea un número
+        startingPrice: Number(startingPrice), // Asegúrate de que startingPrice sea un número
+        endTime: formattedEndTime, // Usa el objeto Date para endTime
         user: {
-          connect: { id: userId }, // Connect the auction to the existing user
+          connect: { id: userId }, // Conecta la subasta con el usuario existente
         },
       },
     });
 
-    this.auctionGateway.sendAuctionUpdate(auction.id); // Emit event for new auction
+    this.auctionGateway.sendAuctionUpdate(auction.id, auction.title, auction.description, auction.startingPrice, auction.userId, auction.endTime); // Emite el evento para la nueva subasta
     return auction;
   }
 
@@ -53,7 +53,7 @@ export class AuctionsService {
       where: { id },
       data: updateAuctionDto,
     });
-    this.auctionGateway.sendAuctionUpdate(auction.id); // Emit event for auction update
+    this.auctionGateway.sendAuctionUpdate(auction.id, auction.title, auction.description, auction.startingPrice, auction.userId, auction.endTime); // Emite el evento para la actualización de la subasta
     return auction;
   }
 

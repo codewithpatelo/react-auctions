@@ -24,8 +24,9 @@ export const deleteAuction = async (id: number) => {
   return await axios.delete(`${API_URL}/auctions/${id}`);
 };
 
-
 export const placeBid = async (auctionId: number, bidAmount: number, userId: number) => {
   const bid = { auctionId: auctionId, amount: bidAmount, userId: userId };
   return await axios.post(`${API_URL}/auctions/${auctionId}/bids`, bid);
 };
+
+

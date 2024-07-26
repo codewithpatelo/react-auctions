@@ -5,6 +5,7 @@ import * as passport from 'passport';
 import * as dotenv from 'dotenv';
 import * as cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
 dotenv.config();
 
@@ -22,10 +23,13 @@ async function bootstrap() {
   );
   app.setGlobalPrefix('api');
   app.enableCors({
-    origin: 'http://localhost:3000', 
+    origin: 'http://localhost:3000',
     credentials: true,
   });
-  
+
+  // Configuración de Socket.IO con CORS
+  app.useWebSocketAdapter(new IoAdapter(app));
+
 
   // Configuración de passport
   app.use(passport.initialize());

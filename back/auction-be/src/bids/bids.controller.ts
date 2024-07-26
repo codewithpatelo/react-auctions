@@ -11,7 +11,7 @@ export class BidsController {
     return this.bidsService.create(createBidDto);
   }
 
-  @Get('auction/:auctionId')
+  @Get()
   findAllByAuctionId(@Param('auctionId') auctionId: string) {
     return this.bidsService.findAllByAuctionId(+auctionId);
   }

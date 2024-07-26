@@ -2,7 +2,13 @@ import { WebSocketGateway, SubscribeMessage, OnGatewayInit, OnGatewayConnection,
 import { Server, Socket } from 'socket.io';
 import { Injectable } from '@nestjs/common';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+})
 @Injectable()
 export class AuctionGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
@@ -21,12 +27,13 @@ export class AuctionGateway implements OnGatewayInit, OnGatewayConnection, OnGat
   }
 
   // Emitir un evento de actualización de subasta
-  sendAuctionUpdate(auctionId: number) {
-    this.server.emit('auctionUpdate', { auctionId });
+  sendAuctionUpdate(id: number, title: string, description: string, startingPrice: number, userId: number, endTime: Date) {
+    this.server.emit('auctionUpdate', { id, title, description, startingPrice, userId, endTime });
   }
 
+
   // Emitir un evento de nueva puja
-  sendBidUpdate(bidId: number) {
-    this.server.emit('bidUpdate', { bidId });
+  sendBidUpdate(bidId: number, bidAmount: number, auctionId: number) {
+    this.server.emit('bidUpdate', { id: bidId, amount: bidAmount, auctionId });
   }
 }
