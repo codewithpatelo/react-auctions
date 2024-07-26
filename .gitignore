@@ -1,0 +1,95 @@
+# compiled output
+/back/auction-be/dist
+/back/auction-be/node_modules
+/back/auction-be/build
+
+# Logs
+/back/auction-be/logs
+/back/auction-be/*.log
+/back/auction-be/npm-debug.log*
+/back/auction-be/pnpm-debug.log*
+/back/auction-be/yarn-debug.log*
+/back/auction-be/yarn-error.log*
+/back/auction-be/lerna-debug.log*
+
+# OS
+/back/auction-be/.DS_Store
+
+# Tests
+/back/auction-be/coverage
+/back/auction-be/.nyc_output
+
+# IDEs and editors
+/back/auction-be/.idea
+/back/auction-be/.project
+/back/auction-be/.classpath
+/back/auction-be/.c9/
+/back/auction-be/*.launch
+/back/auction-be/.settings/
+/back/auction-be/*.sublime-workspace
+
+# IDE - VSCode
+/back/auction-be/.vscode/*
+/back/auction-be/!.vscode/settings.json
+/back/auction-be/!.vscode/tasks.json
+/back/auction-be/!.vscode/launch.json
+/back/auction-be/!.vscode/extensions.json
+
+# dotenv environment variable files
+/back/auction-be/.env
+/back/auction-be/.env.development.local
+/back/auction-be/.env.test.local
+/back/auction-be/.env.production.local
+/back/auction-be/.env.local
+
+# temp directory
+/back/auction-be/.temp
+/back/auction-be/.tmp
+
+# Runtime data
+/back/auction-be/pids
+/back/auction-be/*.pid
+/back/auction-be/*.seed
+/back/auction-be/*.pid.lock
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+/back/auction-be/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/front/auction-fe/node_modules
+/front/auction-fe/.pnp
+/front/auction-fe/.pnp.js
+/front/auction-fe/.yarn/install-state.gz
+
+# testing
+/front/auction-fe/coverage
+
+# next.js
+/front/auction-fe/.next/
+/front/auction-fe/out/
+
+# production
+/front/auction-fe/build
+
+# misc
+/front/auction-fe/.DS_Store
+/front/auction-fe/*.pem
+
+# debug
+/front/auction-fe/npm-debug.log*
+/front/auction-fe/yarn-debug.log*
+/front/auction-fe/yarn-error.log*
+
+# local env files
+/front/auction-fe/.env
+/front/auction-fe/.env*.local
+
+# vercel
+/front/auction-fe/.vercel
+
+# typescript
+/front/auction-fe/*.tsbuildinfo
+/front/auction-fe/next-env.d.ts
+
