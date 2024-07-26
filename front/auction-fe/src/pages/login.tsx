@@ -13,8 +13,10 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:4000/api/auth/login', { email, password });
-      const { access_token } = response.data;
+      console.log("Response: ", response.data);
+      const { access_token, user_id } = response.data;
       nookies.set(null, 'token', access_token, { path: '/' }); // Establece el token en una cookie
+      nookies.set(null, 'user_id', user_id, { path: '/' }); // Establece el user_id en una cookie
       router.push('/');
     } catch (error) {
       console.error('Failed to login.');

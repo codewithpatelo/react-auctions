@@ -6,7 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { PrismaService } from '../prisma.service'; // Asegúrate de que esta ruta sea correcta
 import { AuthController } from './auth.controller';
 import { AuthSerializer } from './auth.serializer';
-import { AuthService } from './auth.servide';
+import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({

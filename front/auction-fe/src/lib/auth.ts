@@ -1,8 +1,8 @@
-// src/lib/auth.ts
-import { IncomingMessage } from 'http';
-import { parseCookies } from 'nookies';
+// lib/auth.ts
 
-export const isAuthenticated = (ctx: { req: IncomingMessage }) => {
-  const cookies = parseCookies(ctx);
-  return Boolean(cookies.token);
+import nookies from 'nookies';
+
+export const isAuthenticated = (ctx: any) => {
+  const cookies = nookies.get(ctx);
+  return cookies.token !== undefined;
 };

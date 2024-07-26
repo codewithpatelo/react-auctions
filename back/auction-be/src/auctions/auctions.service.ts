@@ -34,11 +34,6 @@ export class AuctionsService {
 
   async findAll() {
     return this.prisma.auction.findMany({
-      where: {
-        endTime: {
-          gte: new Date(),
-        },
-      },
       orderBy: {
         createdAt: 'desc',
       },

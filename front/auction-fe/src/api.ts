@@ -1,5 +1,6 @@
 // src/api.ts
 import axios from 'axios';
+import { Auction } from './types';
 
 const API_URL = 'http://localhost:4000/api';
 
@@ -11,7 +12,7 @@ export const fetchAuction = async (id: number) => {
   return await axios.get(`${API_URL}/auctions/${id}`);
 };
 
-export const createAuction = async (auctionData: any) => {
+export const createAuction = async (auctionData: Auction) => {
   return await axios.post(`${API_URL}/auctions`, auctionData);
 };
 

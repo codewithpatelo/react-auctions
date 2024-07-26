@@ -12,12 +12,16 @@ const CreateAuction = () => {
   const [startingPrice, setStartingPrice] = useState('');
   const router = useRouter();
   const session = useSession();
+  const [userId, setUserId] = useState(nookies.get(null).user_id);
 
   useEffect(() => {
     const checkAuth = async () => {
       const cookies = nookies.get(null);
+      console.log(cookies);
       if (!cookies.token) {
         router.push('/login');
+      } else {
+        setUserId(cookies.user_id);
       }
     };
     checkAuth();
@@ -26,7 +30,11 @@ const CreateAuction = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createAuction({ title, description, endTime, startingPrice });
+
+      await createAuction({
+        title, description, endTime, startingPrice,
+        userId: Number(userId)
+      });
       router.push('/');
     } catch (error) {
       alert('Failed to create auction.');

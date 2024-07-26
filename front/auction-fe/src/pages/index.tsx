@@ -1,16 +1,61 @@
 // pages/index.tsx
 
-import { GetServerSideProps } from 'next';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Auction } from '@/types';
-import { isAuthenticated } from '../lib/auth';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
+import nookies from 'nookies';
 
-interface Props {
-  auctions: Auction[];
-}
+const Home = () => {
+  const [auctions, setAuctions] = useState<Auction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-const Home = ({ auctions }: Props) => {
+  useEffect(() => {
+    const fetchAuctions = async () => {
+      try {
+        const cookies = nookies.get();
+        const token = cookies.token;
+
+        if (!token) {
+          router.push('/login');
+          return;
+        }
+
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auctions`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAuctions(response.data);
+      } catch (err) {
+        console.error(err);
+
+        // Asegurarse de que err sea un Error
+        if (axios.isAxiosError(err)) {
+          // Verificar si el error tiene respuesta y manejarlo adecuadamente
+          if (err.response) {
+            setError(`Failed to fetch auctions: ${err.response.statusText}`);
+            if (err.response.status === 401) {
+              router.push('/login');
+            }
+          } else {
+            setError('An unexpected error occurred.');
+          }
+        } else {
+          setError('An unknown error occurred.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAuctions();
+  }, [router]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Active Auctions</h1>
@@ -39,36 +84,6 @@ const Home = ({ auctions }: Props) => {
       </ul>
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const authenticated = isAuthenticated(ctx);
-
-  if (!authenticated) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-
-  try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auctions`, {
-      headers: { cookie: ctx.req.headers.cookie },
-    });
-    return {
-      props: {
-        auctions: response.data,
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
-        auctions: [],
-      },
-    };
-  }
 };
 
 export default Home;
