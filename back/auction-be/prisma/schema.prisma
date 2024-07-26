@@ -27,6 +27,10 @@ model Auction {
   userId        Int
   bids          Bid[]
   user          User     @relation(fields: [userId], references: [id])
+
+  @@index([title])
+  @@index([userId])
+  @@index([endTime])
 }
 
 model Bid {
@@ -37,4 +41,9 @@ model Bid {
   createdAt DateTime @default(now())
   auction   Auction  @relation(fields: [auctionId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
+
+  @@index([auctionId])
+  @@index([userId])
+  @@index([amount])
+  @@index([createdAt])
 }
